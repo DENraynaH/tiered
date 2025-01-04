@@ -77,7 +77,16 @@ public class ReforgeScreenHandler extends ScreenHandler {
 
     private void updateResult() {
         ItemStack stack = this.getSlot(1).getStack();
-        if (this.getSlot(0).hasStack() && this.getSlot(1).hasStack() && this.getSlot(2).hasStack()) {
+
+        int amethystRequired = ConfigInit.CONFIG.amethystCost;
+        int materialRequired = ConfigInit.CONFIG.materialCost;
+
+        if (
+                this.getSlot(0).getStack().getCount() >= materialRequired &&
+                this.getSlot(1).hasStack() &&
+                this.getSlot(2).getStack().getCount() >= amethystRequired
+        )  {
+
             Item item = stack.getItem();
             if (!stack.isIn(TieredItemTags.MODIFIER_RESTRICTED) && ModifierUtils.getRandomAttributeIDFor(null, item, false) != null && !stack.isDamaged()) {
                 List<Item> items = Tiered.REFORGE_DATA_LOADER.getReforgeBaseItems(item);
@@ -175,8 +184,17 @@ public class ReforgeScreenHandler extends ScreenHandler {
         ModifierUtils.removeItemStackAttribute(itemStack);
         ModifierUtils.setItemStackAttribute(player, itemStack, true);
 
-        this.decrementStack(0);
-        this.decrementStack(2);
+        int amethystRequired = ConfigInit.CONFIG.amethystCost;
+        int materialRequired = ConfigInit.CONFIG.materialCost;
+
+        for (int x = 0; x < materialRequired; ++x) {
+            this.decrementStack(0);
+        }
+
+        for (int x = 0; x < amethystRequired; ++x) {
+            this.decrementStack(2);
+        }
+
         this.context.run((world, pos) -> world.syncWorldEvent(WorldEvents.ANVIL_USED, (BlockPos) pos, 0));
     }
 

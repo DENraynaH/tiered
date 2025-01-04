@@ -25,6 +25,12 @@ public class TieredConfig implements ConfigData {
     public float luckReforgeModifier = 0.02F;
     public boolean uniqueReforge = false;
 
+    @Comment("Amount Of Amethyst Per Reforge")
+    public int amethystCost = 10;
+
+    @Comment("Amount Of Amethyst Per Reforge")
+    public int materialCost = 3;
+
     @ConfigEntry.Category("client_settings")
     public boolean showReforgingTab = true;
     @ConfigEntry.Category("client_settings")
